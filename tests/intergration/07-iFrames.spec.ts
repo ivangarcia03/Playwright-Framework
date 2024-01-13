@@ -1,4 +1,4 @@
-import {test, expect} from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { clickLink } from '../../helpers/clickHelpers'
 
 test.describe('iFrames', async () => {
@@ -18,22 +18,23 @@ test.describe('iFrames', async () => {
    */
 
   test('iFrames Test Case', async ({ page }) => {
-
     const frameLocator = page.frameLocator('#form_frame')
     const inputFields = frameLocator.locator('#first_name, #last_name')
     const inputFieldsCount = await inputFields.count()
     const submitBtn = frameLocator.locator('#submit')
     const result = page.locator('#result')
 
-    await inputFields.last().waitFor({state: 'visible'})
+    await inputFields.last().waitFor({ state: 'visible' })
 
     const name = 'John'
     const lastName = 'Doe'
 
-    for(let i = 0; i < inputFieldsCount; i++ ){
-        await inputFields.nth(i).fill(i == 0 ? name : lastName)
+    for (let i = 0; i < inputFieldsCount; i++) {
+      await inputFields.nth(i).fill(i == 0 ? name : lastName)
     }
     await submitBtn.click()
+
+    await result.waitFor({ state: 'visible' })
 
     await expect(result).toHaveText(`You entered: ${name} ${lastName}`)
   })
